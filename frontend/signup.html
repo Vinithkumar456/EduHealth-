@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purple Sign Up Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #9489ea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .signup-card {
+            display: flex;
+            background-color: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Left Panel */
+        .left-panel {
+            background-color: #6c5ce7;
+            color: white;
+            padding: 30px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .illustration {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .night-illustration {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+
+        .experience-text {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .upgrade-text {
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            padding: 40px;
+            width: 50%;
+            background-color: white;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .greeting {
+            margin-bottom: 20px;
+        }
+
+        .greeting h3 {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .greeting h2 {
+            color: #6c5ce7;
+            font-weight: 600;
+        }
+
+        .signup-form h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #6c5ce7;
+        }
+
+        .role-selection {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .role-selection label {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .role-selection input {
+            margin-right: 8px;
+        }
+
+        #student-class-group, #teacher-subject-group {
+            display: none;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .terms input {
+            margin-right: 10px;
+        }
+
+        .terms a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .signup-btn:hover {
+            background-color: #5b4cdb;
+        }
+
+        .login-account {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-account a {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .signup-card {
+                flex-direction: column;
+            }
+
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+
+            .left-panel {
+                padding: 20px;
+            }
+
+            .illustration {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="signup-card">
+            <div class="left-panel">
+                <div class="illustration">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/login.jpg-FDW8FTHUy5AjiFrwMHryt6dKCtkJAo.jpeg" alt="Night sky illustration" class="night-illustration">
+                </div>
+                <p class="experience-text">Create your Account to get Full User Experience</p>
+                <p class="upgrade-text">Tip: Premium members get access to exclusive features</p>
+            </div>
+            <div class="right-panel">
+                <div class="greeting">
+                    <h3>Hello!</h3>
+                    <h2>EduHealth</h2>
+                </div>
+                <div class="signup-form">
+                    <h3>Create your account</h3>
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" name="fullname">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password">
+                    </div>
+                    <div class="role-selection">
+                        <label><input type="radio" id="teacher-radio" name="role" value="teacher" > Teacher</label>
+                        <label><input type="radio" id="student-radio" name="role" value="student"> Student</label>
+                    </div>
+                    <div class="form-group" >
+                        <label for="class-name">Class</label>
+                        <input type="number" id="class-name" name="class-name" min="1" max="10">
+                    </div>
+                    
+                    
+                    <button class="signup-btn" onclick="signup()">Sign Up</button>
+                    <div class="login-account">
+                        Already have an account? <a href="login.html">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        async function signup() {
+            const name = document.getElementById("fullname").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const confirmPassword = document.getElementById("confirm-password").value.trim();
+            const role = document.querySelector('input[name="role"]:checked')?.value;
+            const className = document.getElementById("class-name").value; // Trim input
+        
+            if (!fullname || !email || !password || !confirmPassword || !role) {
+                alert("Please fill all required fields.");
+                return;
+            }
+        
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+        
+            classNum=parseInt(className);
+        
+            const requestData = {
+                name,
+                email,
+                password,
+                role,
+                classNum// Send className only for students
+            };
+        
+            try {
+                const response = await fetch("http://localhost:5000/api/auth/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                });
+        
+                const data = await response.json();
+        
+                if (response.ok) {
+                    alert("Registration successful! Redirecting to login...");
+                    window.location.href = "login.html"; // Redirect to login page
+                } else {
+                    alert(`Registration failed: ${data.message || "Unknown error"}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Please try again.");
+            }
+        }
+          
+    </script>
+</body>
+</html>

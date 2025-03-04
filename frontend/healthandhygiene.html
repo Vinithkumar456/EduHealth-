@@ -1,0 +1,533 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+    --primary-color: #5d57c5;
+    --secondary-color: #534bae;
+    --background-color: #f5f5f5;
+    --text-color: #333;
+    --text-light: #6c63ff;
+    --border-color: #e0e0e0;
+    --white: #ffffff;
+    --sidebar-width: 240px;
+    --header-height: 64px;
+    --video-sidebar-width: 360px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 10px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    margin-right: 12px;
+    font-size: 18px;
+    width: 20px;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.nav-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+}
+
+/* Header Styles */
+.header {
+    height: var(--header-height);
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.search-container {
+    position: relative;
+    width: 300px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 8px 15px 8px 35px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.search-container i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    transition: background-color 0.3s ease;
+}
+
+.icon-btn:hover {
+    background-color: var(--background-color);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.user-profile:hover {
+    background-color: var(--background-color);
+}
+
+.user-profile img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* Content Container Styles */
+.content-container {
+    display: flex;
+    height: calc(100vh - var(--header-height));
+}
+
+/* Video Sidebar Styles */
+.video-sidebar {
+    width: var(--video-sidebar-width);
+    background-color: var(--white);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.course-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.course-header h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.progress {
+    height: 6px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress span {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.video-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.section {
+    padding: 20px;
+}
+
+.section h3 {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.video-item {
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.video-item:hover {
+    background-color: var(--background-color);
+}
+
+.video-item.active {
+    background-color: var(--background-color);
+}
+
+.video-info {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.video-info i {
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+.video-details h4 {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.video-meta, .video-date {
+    display: block;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+/* Video Player Styles */
+.video-player {
+    flex: 1;
+    background-color: var(--white);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.video-title h1 {
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+.course-logo {
+    height: 40px;
+}
+
+.player-wrapper {
+    flex: 1;
+    position: relative;
+    background-color: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.player-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .video-sidebar {
+        width: 300px;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .logo-text, .nav-item span {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 70px;
+    }
+    
+    .nav-item {
+        justify-content: center;
+        padding: 12px;
+    }
+    
+    .nav-item i {
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-sidebar {
+        position: fixed;
+        left: -300px;
+        top: var(--header-height);
+        height: calc(100vh - var(--header-height));
+        transition: left 0.3s ease;
+    }
+    
+    .video-sidebar.active {
+        left: 0;
+    }
+    
+    .search-container {
+        width: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-container {
+        display: none;
+    }
+    
+    .user-profile span {
+        display: none;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+                
+                <div class="header-right">
+                    <button class="icon-btn">
+                        <i class="far fa-bell"></i>
+                    </button>
+                    <button class="icon-btn">
+                        <i class="far fa-comment"></i>
+                    </button>
+                    
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-container">
+                <!-- Video List Sidebar -->
+                <div class="video-sidebar">
+                    <div class="course-header">
+                        <h2>Health And Hygiene</h2>
+                        
+                    </div>
+            
+                    <div class="video-list">
+                        <div class="section">
+                            <h3>Learning Contents</h3>
+                            
+                            <div class="video-item active" data-video="https://www.youtube.com/embed/lAcoUszRGxc">
+                                <div class="video-info">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-details">
+                                        <h4>Basic</h4>
+                                        <span class="video-meta">Video : 01:44</span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="video-item" data-video="https://www.youtube.com/embed/7FgHTDRFR_g">
+                                <div class="video-info">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-details">
+                                        <h4>Importance</h4>
+                                        <span class="video-meta">Video : 03:08</span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="video-item" data-video="https://www.youtube.com/embed/8819a6hCPsU">
+                                <div class="video-info">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-details">
+                                        <h4>Habits</h4>
+                                        <span class="video-meta">Video : 02:40</span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="video-item" data-video="https://www.youtube.com/embed/zh7CACofsio">
+                                <div class="video-info">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-details">
+                                        <h4>Personal Hygiene</h4>
+                                        <span class="video-meta">Video : 04:24</span>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="video-item" data-video="https://www.youtube.com/embed/fv-EGsNvNzc">
+                                <div class="video-info">
+                                    <i class="fas fa-play-circle"></i>
+                                    <div class="video-details">
+                                        <h4>Dental Hygiene</h4>
+                                        <span class="video-meta">Video : 05:13</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Video Player Area -->
+                <div class="video-player">
+                    <div class="video-title">
+                        <h1 id="video-title">Decision Making</h1>
+                    </div>
+                    <div class="player-wrapper">
+                        <iframe 
+                            id="video-frame"
+                            src="https://www.youtube.com/embed/NkZFnpDhdCk"
+                            title="Video Player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                // Get all video items
+                const videoItems = document.querySelectorAll(".video-item");
+                const videoFrame = document.getElementById("video-frame");
+                const videoTitle = document.getElementById("video-title");
+            
+                // Add click event to all video items
+                videoItems.forEach(item => {
+                    item.addEventListener("click", function () {
+                        // Remove 'active' class from all items
+                        document.querySelector(".video-item.active").classList.remove("active");
+            
+                        // Add 'active' class to clicked item
+                        this.classList.add("active");
+            
+                        // Get new video URL
+                        const newVideo = this.getAttribute("data-video");
+            
+                        // Update the iframe src
+                        videoFrame.src = newVideo;
+            
+                        // Update video title
+                        videoTitle.textContent = this.querySelector("h4").textContent;
+                    });
+                });
+            </script>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .quiz-header {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #6c5ce7;
+        }
+        
+        .title-normal {
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .title-colored {
+            color: #6c5ce7;
+            font-weight: bold;
+        }
+        
+        .question-container {
+            background-color: #6c5ce7;
+            padding: 30px 20px;
+            color: white;
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .option-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .option-row {
+                flex-direction: column;
+            }
+        }
+        
+        .option {
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            flex: 1;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected {
+            background-color: #ffeaa7;
+            border: 2px solid #fdcb6e;
+        }
+        
+        .option-label {
+            background-color: #a29bfe;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .option-text {
+            padding: 15px;
+            flex: 1;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+        }
+        
+        .progress-indicator {
+            font-weight: bold;
+            color: #6c5ce7;
+        }
+        
+        button {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #5649c0;
+        }
+        
+        button:disabled {
+            background-color: #b3b3b3;
+            cursor: not-allowed;
+        }
+        
+        .submit-container {
+            padding: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        #submit-btn {
+            background-color: #00b894;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+        }
+        
+        #submit-btn:hover {
+            background-color: #00a382;
+        }
+        
+        .results-container {
+            padding: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .results-container h2 {
+            color: #6c5ce7;
+            margin-bottom: 20px;
+        }
+        
+        .results-container p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        #score {
+            font-weight: bold;
+            color: #6c5ce7;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Quiz questions array - 15 questions
+        const quizQuestions = [
+        {
+            question: "How often do you feel overwhelmed by schoolwork?",
+            options: {
+                A: "Almost every day",
+                B: "A few times a week",
+                C: "Occasionally",
+                D: "Rarely or never"
+            }
+        },
+        {
+            question: "How do you usually feel about exams and assessments?",
+            options: {
+                A: "Extremely anxious, affecting my performance",
+                B: "Somewhat stressed but manageable",
+                C: "Neutral, I prepare and do my best",
+                D: "Confident and well-prepared"
+            }
+        },
+        {
+            question: "How comfortable are you discussing your mental health with teachers or school counselors?",
+            options: {
+                A: "Not comfortable at all",
+                B: "A little comfortable",
+                C: "Quite comfortable",
+                D: "Very comfortable"
+            }
+        },
+        {
+            question: "How well do you balance academics and personal time?",
+            options: {
+                A: "I struggle a lot and feel exhausted",
+                B: "It’s difficult but manageable",
+                C: "I maintain a decent balance",
+                D: "I have a well-structured routine"
+            }
+        },
+        {
+            question: "How often do you experience burnout due to academic pressure?",
+            options: {
+                A: "Very frequently",
+                B: "Sometimes",
+                C: "Rarely",
+                D: "Never"
+            }
+        },
+        {
+            question: "How do you handle stressful situations at school?",
+            options: {
+                A: "I panic and feel overwhelmed",
+                B: "I try to push through, but it’s tough",
+                C: "I use some coping strategies",
+                D: "I manage stress effectively"
+            }
+        },
+        {
+            question: "How connected do you feel with your classmates and peers?",
+            options: {
+                A: "Very disconnected and lonely",
+                B: "Somewhat isolated at times",
+                C: "I have a few good friends",
+                D: "I feel well-connected and supported"
+            }
+        },
+        {
+            question: "How often do you feel motivated to attend school?",
+            options: {
+                A: "Almost never",
+                B: "Occasionally",
+                C: "Most of the time",
+                D: "Always excited to learn"
+            }
+        },
+        {
+            question: "What is your main source of emotional support in school?",
+            options: {
+                A: "No one, I keep things to myself",
+                B: "A close friend or peer",
+                C: "A teacher or counselor",
+                D: "My family or external support"
+            }
+        },
+        {
+            question: "How do you feel about the mental health resources available in your school?",
+            options: {
+                A: "They are not helpful or accessible",
+                B: "They exist but are not effective",
+                C: "Somewhat useful but need improvement",
+                D: "Very helpful and supportive"
+            }
+        }
+    ];
+    
+
+// Variables to track quiz state
+let currentQuestionIndex = 0;
+let userAnswers = Array(quizQuestions.length).fill(null);
+let quizSubmitted = false;
+
+// Initialize the quiz when the page loads
+window.onload = function() {
+    loadQuestion(currentQuestionIndex);
+    updateUI();
+};
+
+// Load a question by index
+function loadQuestion(index) {
+    const question = quizQuestions[index];
+    document.getElementById('question-text').textContent = question.question;
+    document.getElementById('option-a').textContent = question.options.A;
+    document.getElementById('option-b').textContent = question.options.B;
+    document.getElementById('option-c').textContent = question.options.C;
+    document.getElementById('option-d').textContent = question.options.D;
+    
+    // Update progress indicator
+    document.getElementById('progress-indicator').textContent = `${index + 1} / ${quizQuestions.length}`;
+    
+    // Clear previous selections
+    clearSelectedOptions();
+    
+    // If user has already answered this question, show their selection
+    if (userAnswers[index] !== null) {
+        const selectedOption = document.querySelector(`.option[data-option="${userAnswers[index]}"]`);
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+    }
+}
+
+// Handle option selection
+function selectOption(option) {
+    if (quizSubmitted) return;
+    
+    // Clear previous selections
+    clearSelectedOptions();
+    
+    // Mark the selected option
+    const selectedOption = document.querySelector(`.option[data-option="${option}"]`);
+    if (selectedOption) {
+        selectedOption.classList.add('selected');
+    }
+    
+    // Save the user's answer
+    userAnswers[currentQuestionIndex] = option;
+    
+    // Update UI (enable/disable buttons)
+    updateUI();
+}
+
+// Clear all selected options
+function clearSelectedOptions() {
+    const options = document.querySelectorAll('.option');
+    options.forEach(option => {
+        option.classList.remove('selected');
+    });
+}
+
+// Show the next question
+function showNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion(currentQuestionIndex);
+        updateUI();
+    }
+}
+
+// Show the previous question
+function showPreviousQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion(currentQuestionIndex);
+        updateUI();
+    }
+}
+
+// Update UI elements based on current state
+function updateUI() {
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitContainer = document.getElementById('submit-container');
+    
+    // Enable/disable previous button
+    prevBtn.disabled = currentQuestionIndex === 0;
+    
+    // Enable/disable next button
+    nextBtn.disabled = currentQuestionIndex === quizQuestions.length - 1;
+    
+    // Show/hide submit button
+    if (currentQuestionIndex === quizQuestions.length - 1) {
+        submitContainer.style.display = 'block';
+    } else {
+        submitContainer.style.display = 'none';
+    }
+}
+
+// Submit the quiz and show results
+
+
+// Restart the quiz
+function restartQuiz() {
+    // Reset variables
+    currentQuestionIndex = 0;
+    userAnswers = Array(quizQuestions.length).fill(null);
+    quizSubmitted = false;
+    
+    // Show quiz elements
+    document.getElementById('question-container').style.display = 'block';
+    document.getElementById('controls').style.display = 'flex';
+    
+    // Hide results
+    document.getElementById('results-container').style.display = 'none';
+    
+    // Load first question
+    loadQuestion(currentQuestionIndex);
+    updateUI();
+}
+function submitQuiz() {
+    if (quizSubmitted) return;
+
+    quizSubmitted = true;
+
+    // Collect responses as 10 variables
+    let responses = {};
+    for (let i = 0; i < 10; i++) {
+        responses[`response${i + 1}`] = userAnswers[i] || "Not Answered";
+    }
+    console.log(responses);
+    // Send data to API
+    fetch("http://localhost:5000/api/assessment/quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({responses}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === "insights generated successfully") {
+            displayResults(data.data.mental_health_assessment);
+        } else {
+            alert("Error: Unable to generate insights.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function displayResults(assessment) {
+    
+    const resultContainer = document.getElementById("results-container");
+    if (!resultContainer) {
+        console.error("Error: 'results-container' not found in the document.");
+        return;
+    }
+
+    resultContainer.innerHTML = `
+        <h2>Quiz Insights</h2>
+        <h3>Overall Summary</h3>
+        <p>${assessment.overall_summary}</p>
+        
+        <h3>Key Issues</h3>
+        <ul>${assessment.key_issues.map(issue => `<li>${issue}</li>`).join("")}</ul>
+
+        <h3>Positives</h3>
+        <ul>${assessment.positives.map(pos => `<li>${pos}</li>`).join("")}</ul>
+
+        <h3>Negatives</h3>
+        <ul>${assessment.negatives.map(neg => `<li>${neg}</li>`).join("")}</ul>
+
+        <h3>Recommended Actions</h3>
+        <h4>Immediate</h4>
+        <ul>${assessment.recommended_actions.immediate.map(act => `<li>${act}</li>`).join("")}</ul>
+        <h4>Long Term</h4>
+        <ul>${assessment.recommended_actions.long_term.map(act => `<li>${act}</li>`).join("")}</ul>
+
+        <h3>Suggested Exercises</h3>
+        <ul>
+            ${assessment.suggested_exercises.map(exercise => `
+                <li><b>${exercise.name}:</b> ${exercise.description} <i>(${exercise.duration})</i></li>
+            `).join("")}
+        </ul>
+
+        <button onclick="restartQuiz()">Restart Quiz</button>
+    `;
+
+    // Hide quiz elements only if they exist
+    ["question-container", "controls", "submit-container"].forEach(id => {
+        let element = document.getElementById(id);
+        if (element) {
+            element.style.display = 'none';
+        } else {
+            console.warn(`Warning: Element with ID '${id}' not found.`);
+        }
+    });
+
+    resultContainer.style.display = 'block';
+}
+
+    </script>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1><span class="title-normal">INTERACTIVE</span> <span class="title-colored">QUIZ</span></h1>
+        </div>
+        
+        <div id="question-container" class="question-container">
+            <div id="question-text" class="question-text">Question text will appear here</div>
+            
+            <div class="options-container">
+                <div class="option-row">
+                    <div class="option" data-option="A" onclick="selectOption('A')">
+                        <div class="option-label">A</div>
+                        <div class="option-text" id="option-a">Option A</div>
+                    </div>
+                    <div class="option" data-option="B" onclick="selectOption('B')">
+                        <div class="option-label">B</div>
+                        <div class="option-text" id="option-b">Option B</div>
+                    </div>
+                </div>
+                <div class="option-row">
+                    <div class="option" data-option="C" onclick="selectOption('C')">
+                        <div class="option-label">C</div>
+                        <div class="option-text" id="option-c">Option C</div>
+                    </div>
+                    <div class="option" data-option="D" onclick="selectOption('D')">
+                        <div class="option-label">D</div>
+                        <div class="option-text" id="option-d">Option D</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="prev-btn" onclick="showPreviousQuestion()">Previous</button>
+            <div id="progress-indicator" class="progress-indicator">1 / 15</div>
+            <button id="next-btn" onclick="showNextQuestion()">Next</button>
+        </div>
+        
+        <div id="submit-container" class="submit-container">
+            <button id="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+        </div>
+        
+        <div id="results-container" class="results-container">
+            <h2>Quiz Results</h2>
+            <p>Your score: <span id="score">0</span> / 10</p>
+            <button onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

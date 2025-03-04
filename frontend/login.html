@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purple Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #9489ea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+}
+
+.login-card {
+    display: flex;
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Panel */
+.left-panel {
+    background-color: #6c5ce7;
+    color: white;
+    padding: 30px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.illustration {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.night-illustration {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+}
+
+.experience-text {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.upgrade-text {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Right Panel */
+.right-panel {
+    padding: 40px;
+    width: 50%;
+    background-color: white;
+}
+
+.greeting {
+    margin-bottom: 30px;
+}
+
+.greeting h3 {
+    color: #333;
+    font-weight: 500;
+}
+
+.greeting h2 {
+    color: #6c5ce7;
+    font-weight: 600;
+}
+
+.login-form h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #6c5ce7;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    color: #666;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #6757d9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #5b4cdb;
+}
+
+.create-account {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.create-account a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-card {
+        flex-direction: column;
+    }
+    
+    .left-panel, .right-panel {
+        width: 100%;
+    }
+    
+    .left-panel {
+        padding: 20px;
+    }
+    
+    .illustration {
+        margin-bottom: 10px;
+    }
+}
+        
+  </style>
+</head>
+<body>
+   
+    <div class="container">
+        <div class="login-card">
+            <div class="left-panel">
+                <div class="illustration">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/login1.jpg-oiAygoKgfaDaiR9Msr0BGqULgWhtpz.jpeg" alt="Night sky illustration" class="night-illustration">
+                </div>
+                <p class="experience-text">Login your Account to get Full User Experience</p>
+                
+            </div>
+            <div class="right-panel">
+                <div class="greeting">
+                    <h3>Hello!</h3>
+                    <h2>Welcome Back</h2>
+                </div>
+                <div class="login-form">
+                    <h3>Login your account</h3>
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input type="email" id="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <button class="login-btn" onclick="login()">Login</button>
+
+                    <div class="create-account">
+                        <a href=signup.html>Create Account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function login() {
+            const email = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+        
+            const response = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password }),
+                credentials: "include" // Ensures cookies (session) are sent and received
+            });
+        
+            if (response.ok) {
+                // Redirect to dashboard after successful login
+                window.location.href = "dashboard.html";
+            } else {
+                const data = await response.json();
+                alert(data.message || "Login failed. Please try again.");
+            }
+        }
+        </script>
+        
+</body>
+</html>
