@@ -34,7 +34,7 @@ EduHealth+ is a comprehensive platform designed to integrate healthcare into the
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/EduHealthPlus.git
+   git clone https://github.com/Vinithkumar456/EduHealth-.git
    cd EduHealthPlus
    ```
 
